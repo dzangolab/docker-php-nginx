@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+    uam_php_nginx:
+        container_name: devops_php_nginx_local
+        ports:
+            - "2015:2015"
+        image: devops/php-nginx:local
+        restart: always
