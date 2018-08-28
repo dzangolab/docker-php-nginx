@@ -1,2 +1,2 @@
 build:
-	docker build -t devops/php-nginx:local .
+	docker build -t devops/docker-php-nginx:local .

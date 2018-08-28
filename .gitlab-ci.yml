@@ -2,9 +2,9 @@ stages:
   - build
 
 variables:
-  IMAGE: registry.united-asian.com/ramesh/php-nginx
+  IMAGE: registry.united-asian.com/devops/docker-php-nginx
   IMAGE_DEVELOP: $IMAGE:$CI_BUILD_REF_NAME
-  IMAGE_LOCAL: devops/php-nginx:$CI_PIPELINE_ID
+  IMAGE_LOCAL: devops/docker-php-nginx:$CI_PIPELINE_ID
 
 build:
   after_script:
