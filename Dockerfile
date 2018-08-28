@@ -102,8 +102,6 @@ RUN touch /var/log/cron.log
 
 EXPOSE 80 443 2015
 
-USER www-data
-
 ENTRYPOINT ["/bin/sh"]
 
 CMD ["docker-php-nginx-entrypoint"]
