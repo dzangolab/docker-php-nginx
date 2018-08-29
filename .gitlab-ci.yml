@@ -12,7 +12,7 @@ build:
     - docker rmi -f $IMAGE_DEVELOP
   environment: build
   only:
-    - "5.6"
+    - "7.1"
   script:
     - docker build -t $IMAGE_LOCAL -f Dockerfile --compress .
     - docker tag $IMAGE_LOCAL $IMAGE_DEVELOP
