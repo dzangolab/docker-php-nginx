@@ -33,6 +33,7 @@ RUN ulimit -n 4096 \
         netcat \
         nginx \
         openssh-client \
+        unzip \
         zlib1g-dev \
     && rm -rf /var/lib/apt/lists/* \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
