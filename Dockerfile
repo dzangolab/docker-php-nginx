@@ -36,6 +36,8 @@ RUN ulimit -n 4096 \
         unzip \
         zlib1g-dev \
     && rm -rf /var/lib/apt/lists/* \
+    && pecl install mcrypt-1.0.1 \
+    && docker-php-ext-enable mcrypt \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install \
         calendar \
