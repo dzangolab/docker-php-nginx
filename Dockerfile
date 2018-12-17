@@ -1,4 +1,4 @@
-FROM php:7.1-fpm
+FROM php:7.2-fpm
 
 MAINTAINER Olivier Pichon <op@united-asian.com>
 
@@ -44,7 +44,6 @@ RUN ulimit -n 4096 \
         gd \
         gettext \
         intl \
-        mcrypt \
         mysqli \
         opcache \
         pcntl \
@@ -56,8 +55,9 @@ RUN ulimit -n 4096 \
         sysvshm \
         wddx \
         xsl \
-        zip \
-    && echo "date.timezone="$timezone > /usr/local/etc/php/conf.d/date_timezone.ini \
+        zip
+
+ RUN echo "date.timezone="$timezone > /usr/local/etc/php/conf.d/date_timezone.ini \
     && echo "memory_limit="$memory_limit > /usr/local/etc/php/conf.d/memory_limit.ini \
     && echo "upload_max_filesize="$upload_max_filesize > /usr/local/etc/php/conf.d/upload_max_filesize.ini \
     && echo "display_errors=0" > /usr/local/etc/php/conf.d/display_errors.ini \
@@ -101,7 +101,7 @@ WORKDIR /var/www/html
 
 RUN touch /var/log/cron.log
 
-EXPOSE 80 443 2015
+EXPOSE 80 443
 
 ENTRYPOINT ["/bin/sh"]
 
