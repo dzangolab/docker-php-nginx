@@ -29,6 +29,7 @@ RUN ulimit -n 4096 \
         libpng-dev \
         libxml2-dev \
         libxslt1.1 libxslt1-dev \
+        libzip-dev \
         locales \
         netcat \
         nginx \
