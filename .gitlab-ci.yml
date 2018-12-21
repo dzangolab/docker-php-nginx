@@ -3,7 +3,7 @@ stages:
 
 variables:
   IMAGE: registry.united-asian.com/devops/docker-php-nginx
-  IMAGE_DEVELOP: $IMAGE:$CI_BUILD_REF_NAME
+  IMAGE_DEVELOP: $IMAGE:$CI_COMMIT_REF_NAME
   IMAGE_LOCAL: devops/docker-php-nginx:$CI_PIPELINE_ID
 
 build:
@@ -16,7 +16,23 @@ build:
   script:
     - docker build -t $IMAGE_LOCAL -f Dockerfile --compress .
     - docker tag $IMAGE_LOCAL $IMAGE_DEVELOP
-    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.united-asian.com
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.united-asian.com
+    - docker push $IMAGE_DEVELOP
+  stage: build
+  tags:
+    - builder
+
+build_7.2_fix:
+  after_script:
+    - docker rmi -f $IMAGE_LOCAL
+    - docker rmi -f $IMAGE_DEVELOP
+  environment: build
+  only:
+    - "7.2-fix-permission"
+  script:
+    - docker build -t $IMAGE_LOCAL -f Dockerfile --compress .
+    - docker tag $IMAGE_LOCAL $IMAGE_DEVELOP
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.united-asian.com
     - docker push $IMAGE_DEVELOP
   stage: build
   tags:
