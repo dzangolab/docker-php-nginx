@@ -37,8 +37,6 @@ RUN ulimit -n 4096 \
         unzip \
         zlib1g-dev \
     && rm -rf /var/lib/apt/lists/* \
-    && pecl install mcrypt-1.0.1 \
-    && docker-php-ext-enable mcrypt \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install \
         calendar \
@@ -65,6 +63,7 @@ RUN ulimit -n 4096 \
     && echo "upload_max_filesize="$upload_max_filesize > /usr/local/etc/php/conf.d/upload_max_filesize.ini \
     && echo "display_errors=0" > /usr/local/etc/php/conf.d/display_errors.ini \
     && echo "log_errors=1" > /usr/local/etc/php/conf.d/log_errors.ini \
+    && usermod -u 1001 www-data \
     && chown -R www-data:www-data /var/www \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && apt-get clean autoclean \
