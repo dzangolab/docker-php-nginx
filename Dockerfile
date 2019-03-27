@@ -17,6 +17,7 @@ RUN ulimit -n 4096 \
         build-essential \
         cron \
         git \
+        gmp \
         gnupg \
         libcap2-bin \
         libcurl4-gnutls-dev \
