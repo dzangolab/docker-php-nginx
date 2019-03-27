@@ -22,6 +22,7 @@ RUN ulimit -n 4096 \
         libcurl4-gnutls-dev \
         libfreetype6-dev \
         libgeoip-dev \
+        libgmp-dev \
         libicu-dev \
         libjpeg62-turbo-dev \
         libmagickwand-dev \
