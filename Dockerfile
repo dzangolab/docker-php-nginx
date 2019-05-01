@@ -95,7 +95,7 @@ COPY www/index.html /var/www/html/web/
 
 COPY www/index.php /var/www/html/web/
 
-COPY docker-php-nginx-entrypoint /var/www/html/
+COPY ./bin/docker-php-nginx-entrypoint /usr/local/bin//
 
 RUN chown -R www-data:www-data /var/lib/nginx /var/www \
    && chmod -R 777 /var/lib/nginx
@@ -108,4 +108,4 @@ EXPOSE 80 443
 
 ENTRYPOINT ["/bin/sh"]
 
-CMD ["docker-php-nginx-entrypoint"]
+CMD ["/usr/local/bin/docker-php-nginx-entrypoint"]
