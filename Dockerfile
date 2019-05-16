@@ -22,6 +22,7 @@ RUN ulimit -n 4096 \
         libcurl4-gnutls-dev \
         libfreetype6-dev \
         libgeoip-dev \
+        libgmp-dev \
         libicu-dev \
         libjpeg62-turbo-dev \
         libmagickwand-dev \
@@ -43,6 +44,7 @@ RUN ulimit -n 4096 \
         curl \
         exif \
         gd \
+        gmp \
         gettext \
         intl \
         mysqli \
@@ -94,7 +96,7 @@ COPY www/index.html /var/www/html/web/
 
 COPY www/index.php /var/www/html/web/
 
-COPY docker-php-nginx-entrypoint /var/www/html/
+COPY ./bin/docker-php-nginx-entrypoint /usr/local/bin//
 
 RUN chown -R www-data:www-data /var/lib/nginx /var/www \
    && chmod -R 777 /var/lib/nginx
@@ -107,4 +109,4 @@ EXPOSE 80 443
 
 ENTRYPOINT ["/bin/sh"]
 
-CMD ["docker-php-nginx-entrypoint"]
+CMD ["/usr/local/bin/docker-php-nginx-entrypoint"]
