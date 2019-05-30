@@ -58,9 +58,8 @@ RUN ulimit -n 4096 \
         sysvshm \
         wddx \
         xsl \
-        zip
-
- RUN echo "date.timezone="$timezone > /usr/local/etc/php/conf.d/date_timezone.ini \
+        zip \
+    && echo "date.timezone="$timezone > /usr/local/etc/php/conf.d/date_timezone.ini \
     && echo "memory_limit="$memory_limit > /usr/local/etc/php/conf.d/memory_limit.ini \
     && echo "upload_max_filesize="$upload_max_filesize > /usr/local/etc/php/conf.d/upload_max_filesize.ini \
     && echo "display_errors=0" > /usr/local/etc/php/conf.d/display_errors.ini \
@@ -70,21 +69,18 @@ RUN ulimit -n 4096 \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && apt-get clean autoclean \
     && apt-get autoremove -y \
-    && rm -rf /var/lib/{apt,dpkg,cache,log}/
-
-RUN pecl install imagick \
+    && rm -rf /var/lib/{apt,dpkg,cache,log}/ \
+    && pecl install imagick \
     && docker-php-ext-enable imagick \
-    && pecl install geoip-1.1.1  && echo "extension=geoip.so" >> /usr/local/etc/php/conf.d/geoip.ini
-
-RUN /usr/sbin/nginx -v
-
-RUN setcap cap_net_bind_service=+ep /usr/sbin/nginx
+    && pecl install geoip-1.1.1  && echo "extension=geoip.so" >> /usr/local/etc/php/conf.d/geoip.ini \
+    && /usr/sbin/nginx -v \
+    && setcap cap_net_bind_service=+ep /usr/sbin/nginx
 
 ENV PATH "/var/www/.composer/vendor/bin:$PATH"
 
 COPY ./etc/php-fpm.d/www.conf /usr/local/etc/php-fpm.d/www.conf
 
-COPY ./etc/conf.d/ /usr/local/etc/php/conf.d/
+COPY ./etc/php/conf.d/ /usr/local/etc/php/conf.d/
 
 COPY ./etc/nginx/conf.d/nginx.conf /etc/nginx/conf.d/nginx.conf
 
