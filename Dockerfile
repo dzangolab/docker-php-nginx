@@ -1,6 +1,5 @@
 FROM php:7.1-fpm
-
-MAINTAINER Olivier Pichon <op@united-asian.com>
+MAINTAINER Olivier Pichon <op@dzango.com>
 
 ARG build='build'
 
@@ -44,7 +43,6 @@ RUN ulimit -n 4096 \
         gd \
         gettext \
         intl \
-        mcrypt \
         mysqli \
         opcache \
         pcntl \
@@ -62,19 +60,17 @@ RUN ulimit -n 4096 \
     && echo "upload_max_filesize="$upload_max_filesize > /usr/local/etc/php/conf.d/upload_max_filesize.ini \
     && echo "display_errors=0" > /usr/local/etc/php/conf.d/display_errors.ini \
     && echo "log_errors=1" > /usr/local/etc/php/conf.d/log_errors.ini \
+    && usermod -u 1001 www-data \
     && chown -R www-data:www-data /var/www \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && apt-get clean autoclean \
     && apt-get autoremove -y \
-    && rm -rf /var/lib/{apt,dpkg,cache,log}/
-
-RUN pecl install imagick \
+    && rm -rf /var/lib/{apt,dpkg,cache,log}/ \
+    && pecl install imagick \
     && docker-php-ext-enable imagick \
-    && pecl install geoip-1.1.1  && echo "extension=geoip.so" >> /usr/local/etc/php/conf.d/geoip.ini
-
-RUN /usr/sbin/nginx -v
-
-RUN setcap cap_net_bind_service=+ep /usr/sbin/nginx
+    && pecl install geoip-1.1.1  && echo "extension=geoip.so" >> /usr/local/etc/php/conf.d/geoip.ini \
+    && /usr/sbin/nginx -v \
+    && setcap cap_net_bind_service=+ep /usr/sbin/nginx
 
 ENV PATH "/var/www/.composer/vendor/bin:$PATH"
 
@@ -82,17 +78,17 @@ COPY ./etc/php-fpm.d/www.conf /usr/local/etc/php-fpm.d/www.conf
 
 COPY ./etc/conf.d/ /usr/local/etc/php/conf.d/
 
-COPY nginx.conf /etc/nginx/conf.d/nginx.conf
+COPY /etc/nginx/conf.d/nginx.conf /etc/nginx/conf.d/nginx.conf
 
 RUN touch /var/run/nginx.pid
 
 RUN  chown -R www-data:www-data /var/run/nginx.pid /var/lib/nginx /var/log
 
-COPY www/index.html /var/www/html/web/
+COPY www/index.html /var/www/html/
 
-COPY www/index.php /var/www/html/web/
+COPY www/index.php /var/www/html/
 
-COPY docker-php-nginx-entrypoint /var/www/html/
+COPY ./bin/docker-php-nginx-entrypoint /usr/local/bin//
 
 RUN chown -R www-data:www-data /var/lib/nginx /var/www \
    && chmod -R 777 /var/lib/nginx
@@ -101,8 +97,8 @@ WORKDIR /var/www/html
 
 RUN touch /var/log/cron.log
 
-EXPOSE 80 443 2015
+EXPOSE 80 443
 
 ENTRYPOINT ["/bin/sh"]
 
-CMD ["docker-php-nginx-entrypoint"]
+CMD ["/usr/local/bin/docker-php-nginx-entrypoint"]
