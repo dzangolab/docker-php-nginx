@@ -1,6 +1,6 @@
 FROM php:7.3-fpm
 
-MAINTAINER Olivier Pichon <op@united-asian.com>
+MAINTAINER Olivier Pichon <op@dzango.com>
 
 ARG build='build'
 
@@ -86,17 +86,17 @@ COPY ./etc/php-fpm.d/www.conf /usr/local/etc/php-fpm.d/www.conf
 
 COPY ./etc/conf.d/ /usr/local/etc/php/conf.d/
 
-COPY nginx.conf /etc/nginx/conf.d/nginx.conf
+COPY ./etc/nginx/conf.d/nginx.conf /etc/nginx/conf.d/nginx.conf
 
 RUN touch /var/run/nginx.pid
 
 RUN  chown -R www-data:www-data /var/run/nginx.pid /var/lib/nginx /var/log
 
-COPY www/index.html /var/www/html/web/
+COPY www/index.html /var/www/html/
 
-COPY www/index.php /var/www/html/web/
+COPY www/index.php /var/www/html/
 
-COPY ./bin/docker-php-nginx-entrypoint /usr/local/bin//
+COPY ./bin/docker-php-nginx-entrypoint /usr/local/bin/
 
 RUN chown -R www-data:www-data /var/lib/nginx /var/www \
    && chmod -R 777 /var/lib/nginx
