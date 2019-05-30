@@ -69,23 +69,20 @@ RUN ulimit -n 4096 \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && apt-get clean autoclean \
     && apt-get autoremove -y \
-    && rm -rf /var/lib/{apt,dpkg,cache,log}/
-
-RUN pecl install imagick \
+    && rm -rf /var/lib/{apt,dpkg,cache,log}/ \
+    && pecl install imagick \
     && docker-php-ext-enable imagick \
-    && pecl install geoip-1.1.1  && echo "extension=geoip.so" >> /usr/local/etc/php/conf.d/geoip.ini
-
-RUN /usr/sbin/nginx -v
-
-RUN setcap cap_net_bind_service=+ep /usr/sbin/nginx
+    && pecl install geoip-1.1.1  && echo "extension=geoip.so" >> /usr/local/etc/php/conf.d/geoip.ini \
+    && /usr/sbin/nginx -v \
+    && setcap cap_net_bind_service=+ep /usr/sbin/nginx
 
 ENV PATH "/var/www/.composer/vendor/bin:$PATH"
 
 COPY ./etc/php-fpm.d/www.conf /usr/local/etc/php-fpm.d/www.conf
 
-COPY ./etc/conf.d/ /usr/local/etc/php/conf.d/
+COPY ./etc/php/conf.d/ /usr/local/etc/php/conf.d/
 
-COPY nginx.conf /etc/nginx/conf.d/nginx.conf
+COPY ./etc/nginx/conf.d/nginx.conf /etc/nginx/conf.d/nginx.conf
 
 RUN touch /var/run/nginx.pid
 
