@@ -92,7 +92,7 @@ COPY www/index.html /var/www/html/web/
 
 COPY www/index.php /var/www/html/web/
 
-COPY ./bin/docker-php-nginx-entrypoint /usr/local/bin//
+COPY ./bin/docker-php-nginx-entrypoint /usr/local/bin/
 
 RUN chown -R www-data:www-data /var/lib/nginx /var/www \
    && chmod -R 777 /var/lib/nginx
