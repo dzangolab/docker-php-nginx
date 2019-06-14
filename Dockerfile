@@ -78,15 +78,15 @@ COPY ./etc/php-fpm.d/www.conf /usr/local/etc/php-fpm.d/www.conf
 
 COPY ./etc/conf.d/ /usr/local/etc/php/conf.d/
 
-COPY /etc/nginx/conf.d/nginx.conf /etc/nginx/conf.d/nginx.conf
+COPY /etc/nginx/conf.d/nginx.conf /etc/nginx/sites-available/default
 
 RUN touch /var/run/nginx.pid
 
 RUN  chown -R www-data:www-data /var/run/nginx.pid /var/lib/nginx /var/log
 
-COPY www/index.html /var/www/html/
+COPY www/index.html /var/www/html/web
 
-COPY www/index.php /var/www/html/
+COPY www/index.php /var/www/html/web
 
 COPY ./bin/docker-php-nginx-entrypoint /usr/local/bin//
 
