@@ -82,7 +82,7 @@ COPY ./etc/php-fpm.d/www.conf /usr/local/etc/php-fpm.d/www.conf
 
 COPY ./etc/php/conf.d/ /usr/local/etc/php/conf.d/
 
-COPY ./etc/nginx/conf.d/nginx.conf /etc/nginx/conf.d/nginx.conf
+COPY ./etc/nginx/conf.d/nginx.conf /etc/nginx/sites-available/default
 
 RUN touch /var/run/nginx.pid
 
