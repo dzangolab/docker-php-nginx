@@ -1,4 +1,4 @@
-FROM php:7.3-fpm
+FROM php:7.4-fpm
 
 MAINTAINER Olivier Pichon <op@dzango.com>
 
@@ -13,7 +13,7 @@ ARG upload_max_filesize='10M'
 ARG version='version'
 
 RUN ulimit -n 4096 \
-    && apt-get update && apt-get install -y --force-yes --fix-missing  && apt install -y apt-utils \
+    && apt-get update && apt-get install -y --allow-unauthenticated --allow-downgrades --allow-remove-essential --allow-change-held-packages --fix-missing  && apt install -y apt-utils \
         build-essential \
         cron \
         git \
@@ -38,7 +38,7 @@ RUN ulimit -n 4096 \
         unzip \
         zlib1g-dev \
     && rm -rf /var/lib/apt/lists/* \
-    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
+    && docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/ \
     && docker-php-ext-install \
         calendar \
         curl \
@@ -56,7 +56,6 @@ RUN ulimit -n 4096 \
         sysvmsg \
         sysvsem \
         sysvshm \
-        wddx \
         xsl \
         zip \
     && echo "date.timezone="$timezone > /usr/local/etc/php/conf.d/date_timezone.ini \
@@ -88,9 +87,9 @@ RUN touch /var/run/nginx.pid
 
 RUN  chown -R www-data:www-data /var/run/nginx.pid /var/lib/nginx /var/log
 
-COPY www/index.html /var/www/html/web
+COPY www/index.html /var/www/html/web/index.html
 
-COPY www/index.php /var/www/html/web
+COPY www/index.php /var/www/html/web/index.php
 
 COPY ./bin/docker-php-nginx-entrypoint /usr/local/bin/
 
