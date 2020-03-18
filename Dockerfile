@@ -13,7 +13,9 @@ ARG upload_max_filesize='10M'
 ARG version='version'
 
 RUN ulimit -n 4096 \
-    && apt-get update && apt-get install -y --allow-unauthenticated --allow-downgrades --allow-remove-essential --allow-change-held-packages --fix-missing  && apt install -y apt-utils \
+    && apt-get update \
+    && apt-get install -y --allow-unauthenticated --allow-downgrades --allow-remove-essential --allow-change-held-packages --fix-missing \
+    && apt install -y apt-utils \
         build-essential \
         cron \
         git \
