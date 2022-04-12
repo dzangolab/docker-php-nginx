@@ -1,4 +1,4 @@
-FROM php:7.4-fpm
+FROM php:8.1-fpm
 
 MAINTAINER Olivier Pichon <op@dzango.com>
 
@@ -73,7 +73,6 @@ RUN ulimit -n 4096 \
     && rm -rf /var/lib/{apt,dpkg,cache,log}/ \
     && pecl install imagick \
     && docker-php-ext-enable imagick \
-    && pecl install geoip-1.1.1  && echo "extension=geoip.so" >> /usr/local/etc/php/conf.d/geoip.ini \
     && /usr/sbin/nginx -v \
     && setcap cap_net_bind_service=+ep /usr/sbin/nginx
 
