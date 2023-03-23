@@ -8,9 +8,9 @@ ARG memory_limit=-1
 
 ARG timezone='Asia/Hong_Kong'
 
-ARG upload_max_filesize='1G'
+ARG upload_max_filesize='10M'
 
-ARG post_max_size='2G'
+ARG post_max_size='10M'
 
 ARG version='version'
 
