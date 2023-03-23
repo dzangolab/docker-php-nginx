@@ -8,7 +8,9 @@ ARG memory_limit=-1
 
 ARG timezone='Asia/Hong_Kong'
 
-ARG upload_max_filesize='10M'
+ARG upload_max_filesize='1G'
+
+ARG post_max_size='2G'
 
 ARG version='version'
 
@@ -63,6 +65,8 @@ RUN ulimit -n 4096 \
     && echo "date.timezone="$timezone > /usr/local/etc/php/conf.d/date_timezone.ini \
     && echo "memory_limit="$memory_limit > /usr/local/etc/php/conf.d/memory_limit.ini \
     && echo "upload_max_filesize="$upload_max_filesize > /usr/local/etc/php/conf.d/upload_max_filesize.ini \
+    && echo "post_max_size="$post_max_size > /usr/local/etc/php/conf.d/post_max_size.ini \
+    # && echo "max_input_vars="$max_input_vars > /usr/local/etc/php/conf.d/max_input_vars.ini \
     && echo "display_errors=0" > /usr/local/etc/php/conf.d/display_errors.ini \
     && echo "log_errors=1" > /usr/local/etc/php/conf.d/log_errors.ini \
     && usermod -u 1001 www-data \
@@ -95,7 +99,7 @@ COPY www/index.php /var/www/html/web/index.php
 COPY ./bin/docker-php-nginx-entrypoint /usr/local/bin/
 
 RUN chown -R www-data:www-data /var/lib/nginx /var/www \
-   && chmod -R 777 /var/lib/nginx
+    && chmod -R 777 /var/lib/nginx
 
 WORKDIR /var/www/html
 
