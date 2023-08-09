@@ -1,4 +1,4 @@
-FROM php:8.1-fpm
+FROM php:8.2-fpm
 
 MAINTAINER Olivier Pichon <op@dzango.com>
 
@@ -71,7 +71,6 @@ RUN ulimit -n 4096 \
     && echo "log_errors=1" > /usr/local/etc/php/conf.d/log_errors.ini \
     && usermod -u 1001 www-data \
     && chown -R www-data:www-data /var/www \
-    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && apt-get clean autoclean \
     && apt-get autoremove -y \
     && rm -rf /var/lib/{apt,dpkg,cache,log}/ \
