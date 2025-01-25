@@ -1,6 +1,5 @@
 FROM php:8.2-fpm
-
-MAINTAINER Olivier Pichon <op@dzango.com>
+LABEL org.opencontainers.image.authors="op@dzango.com"
 
 ARG build='build'
 
@@ -16,9 +15,15 @@ ARG version='version'
 
 RUN ulimit -n 4096 \
     && apt-get update \
-    && apt-get install -y --allow-unauthenticated --allow-downgrades --allow-remove-essential --allow-change-held-packages --fix-missing \
+    && apt install -y \
+        --allow-unauthenticated \
+        --allow-downgrades \
+        --allow-remove-essential \
+        --allow-change-held-packages \
+        --fix-missing \
     && apt install -y apt-utils \
         build-essential \
+        coreutils \
         cron \
         git \
         gnupg \
@@ -36,7 +41,6 @@ RUN ulimit -n 4096 \
         libxslt1.1 libxslt1-dev \
         libzip-dev \
         locales \
-        netcat \
         nginx \
         openssh-client \
         unzip \
@@ -79,17 +83,11 @@ RUN ulimit -n 4096 \
     && /usr/sbin/nginx -v \
     && setcap cap_net_bind_service=+ep /usr/sbin/nginx
 
-ENV PATH "/var/www/.composer/vendor/bin:$PATH"
-
 COPY ./etc/php-fpm.d/www.conf /usr/local/etc/php-fpm.d/www.conf
 
 COPY ./etc/php/conf.d/ /usr/local/etc/php/conf.d/
 
 COPY ./etc/nginx/conf.d/nginx.conf /etc/nginx/sites-available/default
-
-RUN touch /var/run/nginx.pid
-
-RUN  chown -R www-data:www-data /var/run/nginx.pid /var/lib/nginx /var/log
 
 COPY www/index.html /var/www/html/web/index.html
 
@@ -97,14 +95,17 @@ COPY www/index.php /var/www/html/web/index.php
 
 COPY ./bin/docker-php-nginx-entrypoint /usr/local/bin/
 
-RUN chown -R www-data:www-data /var/lib/nginx /var/www \
-    && chmod -R 777 /var/lib/nginx
+RUN touch /var/run/nginx.pid \
+    && chown -R www-data:www-data /var/run/nginx.pid /var/lib/nginx /var/log \
+    && chown -R www-data:www-data /var/lib/nginx /var/www \
+    && chmod -R 777 /var/lib/nginx \
+    && touch /var/log/cron.log
 
 WORKDIR /var/www/html
 
-RUN touch /var/log/cron.log
-
 EXPOSE 80 443
+
+ENV PATH='/var/www/.composer/vendor/bin:$PATH'
 
 ENTRYPOINT ["/bin/sh"]
 
