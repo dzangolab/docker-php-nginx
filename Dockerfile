@@ -15,7 +15,7 @@ ARG version='version'
 
 RUN ulimit -n 4096 \
     && apt-get update \
-    && apt install -y \
+    && apt-get install -y \
         --allow-unauthenticated \
         --allow-downgrades \
         --allow-remove-essential \
@@ -105,7 +105,7 @@ WORKDIR /var/www/html
 
 EXPOSE 80 443
 
-ENV PATH='/var/www/.composer/vendor/bin:$PATH'
+ENV PATH="/var/www/.composer/vendor/bin:${PATH}"
 
 ENTRYPOINT ["/bin/sh"]
 
